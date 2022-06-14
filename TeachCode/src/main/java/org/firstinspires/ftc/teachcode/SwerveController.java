@@ -5,11 +5,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class SwerveController {
-    // At 4.8v, no load 60 degrees takes super-speed serves .055 seconds to move 60 degrees
+    // At 4.8v, no load 60 degrees takes super-speed servos .055 seconds to move
     // They're faster at more volts, so 195ms + an extra 55mm for "load" consideration:
     private static int DIR_TRANSITION_DELAY_MS = 250;
+    // The range for the non-CRServo configuration to give,
+    // as precisely as possible, a 180 degree distances from 0.0 to 1.0
     private static double SERVO_LO_SCALE = 1.0 / 6.0;
     private static double SERVO_HI_SCALE = 5.0 / 6.0;
+    // In case people are wondering, division is slow. Floating point division is even slower
+    // Invert the values, and multiply instead. (This is probably silly, but I don't know if the
+    // device has an actual FPU or not. If not, multiplying is *WAY* faster, even if it does,
+    // it's still faster)
     private static double INV_PI = 1.0 / Math.PI;
     private static double INV_180 = 1.0 / 180.0;
 
@@ -17,13 +23,12 @@ public class SwerveController {
     // A bunch of stuff gets *much* easier when we can use CRServo's with encoders :)
     private Servo sfl, sfr, srl, srr;
     // Stuff to remember if the servo/motor are in "flipped" mode or not
+    // Not needed once we have encoders: Just use CRServo's & encoders instead...
     private boolean flFlip, frFlip, rlFlip, rrFlip;
 
-    ElapsedTime timer;
-
-    private static void Delay(int ms) {
+    private static void Delay() {
         try {
-            Thread.sleep(ms);
+            Thread.sleep(DIR_TRANSITION_DELAY_MS);
         } catch (Exception e) {
         }
     }
@@ -42,9 +47,13 @@ public class SwerveController {
 
     // This is just to make it easy if I didn't think of this properly
     // A negative angle needs to be flipped around
+    // Anglish: -1 to 1 is -180 to 180 (or -pi to pi)
     static boolean needFlip(double anglish) {
         return anglish < 0.0;
     }
+    // This 'flips' the angle. I _think_ this makes sense.
+    // To move at .5 power, at -45 degrees is the same as moving at -.5 power at 135 degrees
+    // so you just "add" 180 degrees (1 in "anglish" units)
     static double flip(double anglish) {
         // assert(anglish <= 0.0);
         return anglish + 1.0;
@@ -58,19 +67,15 @@ public class SwerveController {
         boolean frl = (needFlip(rla) != rlFlip);
         boolean frr = (needFlip(rra) != rrFlip);
         boolean somethingFlipping = (ffl || ffr || frl || frr);
-        double delay = 0.0;
         if (somethingFlipping) {
             // If we're flipping a servo, we have to stop the bot so it doesn't freak out
             // while the servos are moving a *lot*
             stop();
-            // Start moving the servos to their new locations (often times, nearly 180 degrees)
-            delay = DIR_TRANSITION_DELAY_MS;
             flFlip = needFlip(fla);
             frFlip = needFlip(fra);
             rlFlip = needFlip(rla);
             rrFlip = needFlip(rra);
         }
-        timer.reset();
         // Set all 4 servos to the correct position, dealing with 'flips'
         if (flFlip) fla = flip(fla);
         if (frFlip) fra = flip(fra);
@@ -82,10 +87,7 @@ public class SwerveController {
         srl.setPosition(rla);
         srr.setPosition(rra);
         // We need to wait until the wheels get to the right point, now
-        while (timer.milliseconds() < delay) {
-            // Sneak up on it, because why not?
-            Delay((int) (delay - timer.milliseconds()) / 2);
-        }
+        Delay();
         // Now, make the motors go in the right direction :)
         mfl.setPower(flFlip ? -flp : flp);
         mfr.setPower(frFlip ? -frp : frp);
