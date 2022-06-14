@@ -116,8 +116,6 @@ public class SwerveController {
         frFlip = false;
         rlFlip = false;
         rrFlip = false;
-
-        timer = new ElapsedTime();
     }
 
     public void setControlRadians(double flp, double fla, double frp, double fra, double rlp, double rla, double rrp, double rra) {
