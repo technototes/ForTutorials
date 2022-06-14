@@ -13,73 +13,25 @@ public class SimpleSwerveDrive {
     private static double FR_RL_ROT_ANGLE = 45.0;
     private static int TRANSITION_DELAY_MS = 100;
 
-    private boolean isRotating;
-    private SwerveController fl, fr, rl, rr;
-
-    private static void Delay() {
-        try {
-            Thread.sleep(TRANSITION_DELAY_MS);
-        } catch (Exception e) {
-        }
-    }
-
-    private void setPower(double flp, double frp, double rlp, double rrp) {
-        fl.setPower(flp);
-        fr.setPower(frp);
-        rl.setPower(rlp);
-        rr.setPower(rrp);
-    }
-
-    private void setDegrees(double flp, double frp, double rlp, double rrp) {
-        fl.setDegrees(flp);
-        fr.setDegrees(frp);
-        rl.setDegrees(rlp);
-        rr.setDegrees(rrp);
-    }
-
-    private void setRadians(double flp, double frp, double rlp, double rrp) {
-        fl.setRadians(flp);
-        fr.setRadians(frp);
-        rl.setRadians(rlp);
-        rr.setRadians(rrp);
-    }
-
-    private void setRotating(boolean state) {
-        if (state != isRotating) {
-            isRotating = true;
-            Delay();
-        }
-    }
+    private SwerveController ctrl;
 
     public SimpleSwerveDrive(DcMotorEx flm, DcMotorEx frm, DcMotorEx rlm, DcMotorEx rrm, Servo fls, Servo frs, Servo rls, Servo rrs) {
-        fl = new SwerveController(flm, fls);
-        fr = new SwerveController(frm, frs);
-        rl = new SwerveController(rlm, rls);
-        rr = new SwerveController(rrm, rrs);
-        isRotating = false;
+        ctrl = new SwerveController(flm, frm, rlm, rrm, fls, frs, rls, rrs);
     }
 
     public void setDirectionAndPowerDegrees(double power, double angle) {
-        setDegrees(angle, angle, angle, angle);
-        setRotating(false);
-        setPower(power, power, power, power);
+        ctrl.setControlDegrees(power, angle, power, angle, power, angle, power, angle);
     }
 
     public void setDirectionAndPowerRadians(double power, double angle) {
-        setRadians(angle, angle, angle, angle);
-        setRotating(false);
-        setPower(power, power, power, power);
+        ctrl.setControlRadians(power, angle, power, angle, power, angle, power, angle);
     }
 
     public void setRotationSpeed(double speed) {
-        if (!isRotating) {
-            setDegrees(FL_RR_ROT_ANGLE, FR_RL_ROT_ANGLE, FR_RL_ROT_ANGLE, FL_RR_ROT_ANGLE);
-            setRotating(true);
-        }
-        setPower(-speed, speed, -speed, speed);
+        ctrl.setControlDegrees(speed, FL_RR_ROT_ANGLE, speed, FR_RL_ROT_ANGLE, speed, FR_RL_ROT_ANGLE, speed, FL_RR_ROT_ANGLE);
     }
 
     public void stop() {
-        setPower(0, 0, 0, 0);
+        ctrl.stop();
     }
 }

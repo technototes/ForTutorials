@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teachcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,11 +8,15 @@ public class SwerveController {
     // At 4.8v, no load 60 degrees takes super-speed serves .055 seconds to move 60 degrees
     // They're faster at more volts, so 195ms + an extra 55mm for "load" consideration:
     private static int DIR_TRANSITION_DELAY_MS = 250;
-    private static double INV_PI = 1.0 / MATH.PI;
+    private static double SERVO_LO_SCALE = 1.0 / 6.0;
+    private static double SERVO_HI_SCALE = 5.0 / 6.0;
+    private static double INV_PI = 1.0 / Math.PI;
     private static double INV_180 = 1.0 / 180.0;
+
     private DcMotorEx mfl, mfr, mrl, mrr;
     // A bunch of stuff gets *much* easier when we can use CRServo's with encoders :)
     private Servo sfl, sfr, srl, srr;
+    // Stuff to remember if the servo/motor are in "flipped" mode or not
     private boolean flFlip, frFlip, rlFlip, rrFlip;
 
     ElapsedTime timer;
@@ -37,10 +40,15 @@ public class SwerveController {
         return val;
     }
 
+    // This is just to make it easy if I didn't think of this properly
+    // A negative angle needs to be flipped around
     static boolean needFlip(double anglish) {
         return anglish < 0.0;
     }
-
+    static double flip(double anglish) {
+        // assert(anglish <= 0.0);
+        return anglish + 1.0;
+    }
     // The angles for this function are a scale from -1 to +1 meaning -180 degrees to +180 degrees
     // But since we can only move 180 degrees, we may have to invert the wheel motor...
     public void setControlRelative(double flp, double fla, double frp, double fra, double rlp, double rla, double rrp, double rra) {
@@ -54,11 +62,8 @@ public class SwerveController {
         if (somethingFlipping) {
             // If we're flipping a servo, we have to stop the bot so it doesn't freak out
             // while the servos are moving a *lot*
-            mfl.setPower(0);
-            mfr.setPower(0);
-            mrl.setPower(0);
-            mrr.setPower(0);
-            // Start moving the servos to their new locations (often times, nearly 180...)
+            stop();
+            // Start moving the servos to their new locations (often times, nearly 180 degrees)
             delay = DIR_TRANSITION_DELAY_MS;
             flFlip = needFlip(fla);
             frFlip = needFlip(fra);
@@ -67,10 +72,10 @@ public class SwerveController {
         }
         timer.reset();
         // Set all 4 servos to the correct position, dealing with 'flips'
-        if (flFlip) fla += 1;
-        if (frFlip) fra += 1;
-        if (rlFlip) rla += 1;
-        if (rrFlip) rra += 1;
+        if (flFlip) fla = flip(fla);
+        if (frFlip) fra = flip(fra);
+        if (rlFlip) rla = flip(rla);
+        if (rrFlip) rra = flip(rra);
         // Now set all the servo's angles
         sfl.setPosition(fla);
         sfr.setPosition(fra);
@@ -89,11 +94,27 @@ public class SwerveController {
     }
 
     public SwerveController(DcMotorEx flm, DcMotorEx frm, DcMotorEx rlm, DcMotorEx rrm, Servo fls, Servo frs, Servo rls, Servo rrs) {
-        m = motor;
-        s = servo;
+        mfl = flm;
+        mfr = frm;
+        mrl = rlm;
+        mrr = rrm;
+        sfl = fls;
+        sfr = frs;
+        srl = rls;
+        srr = rrs;
+
         // Until we get encoders, we can use the servo's in normal mode
-        s.scaleRange(.1666666666, .833333333);
-        multiplier = 1.0;
+        sfl.scaleRange(SERVO_LO_SCALE, SERVO_HI_SCALE);
+        sfr.scaleRange(SERVO_LO_SCALE, SERVO_HI_SCALE);
+        srl.scaleRange(SERVO_LO_SCALE, SERVO_HI_SCALE);
+        srr.scaleRange(SERVO_LO_SCALE, SERVO_HI_SCALE);
+
+        // More crap dealing with servos instead of CRServos
+        flFlip = false;
+        frFlip = false;
+        rlFlip = false;
+        rrFlip = false;
+
         timer = new ElapsedTime();
     }
 
@@ -111,5 +132,12 @@ public class SwerveController {
         rra = inRange(-180, 180, rra) * INV_180;
         rla = inRange(-180, 180, rla) * INV_180;
         setControlRelative(flp, fla, frp, fra, rlp, rla, rrp, rra);
+    }
+
+    public void stop() {
+        mfl.setPower(0);
+        mfr.setPower(0);
+        mrl.setPower(0);
+        mrr.setPower(0);
     }
 }

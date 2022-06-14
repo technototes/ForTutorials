@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 // This one has all the details I'm implementing:
 // https://www.chiefdelphi.com/uploads/default/original/3X/e/f/ef10db45f7d65f6d4da874cd26db294c7ad469bb.pdf
 public class HolonomicSwerveDrive {
-    private SwerveController fl, fr, rl, rr;
+    private SwerveController ctrl;
     // L is the vehicle's wheelbase
     private static double L = 12;
     // W is the vehicle's trackwidth
@@ -17,10 +17,7 @@ public class HolonomicSwerveDrive {
     private static double R_INV = 1.0 / Math.sqrt(L * L + W * W);
 
     public HolonomicSwerveDrive(DcMotorEx flm, DcMotorEx frm, DcMotorEx rlm, DcMotorEx rrm, Servo fls, Servo frs, Servo rls, Servo rrs) {
-        fl = new SwerveController(flm, fls);
-        fr = new SwerveController(frm, frs);
-        rl = new SwerveController(rlm, rls);
-        rr = new SwerveController(rrm, rrs);
+        ctrl = new SwerveController(flm, frm, rlm, rrm, fls, frs, rls, rrs);
     }
 
     // ly, lx, rx(ish), plus the angle of the bot currently
@@ -54,9 +51,6 @@ public class HolonomicSwerveDrive {
             srr /= max;
             srl /= max;
         }
-        fr.setControlRadians(sfr, afr);
-        fl.setControlRadians(sfl, afl);
-        rr.setControlRadians(srr, arr);
-        rl.setControlRadians(srl, arl);
+        ctrl.setControlRadians(sfl, afl, sfr, afr, srl, arl, srr, arr);
     }
 }
