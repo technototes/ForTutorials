@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teachcode.OpModes;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teachcode.SwerveModule;
+import org.firstinspires.ftc.teachcode.SwerveController;
 
 @TeleOp(name = "Test Swerve")
 public class TestSwerveModule extends LinearOpMode {
@@ -15,8 +16,10 @@ public class TestSwerveModule extends LinearOpMode {
     private static double POS_DEAD_ZONE = 0.1;
     private static double INV_ROOT_2 = 1.0 / Math.sqrt(2.0);
 
-    private SwerveModule sm;
+    private SwerveController sm;
     private BNO055IMU imu;
+    private CRServo srvo;
+    private Servo s;
     private ElapsedTime runtime = new ElapsedTime();
 
     private static double inRange(double low, double high, double val) {
@@ -39,9 +42,10 @@ public class TestSwerveModule extends LinearOpMode {
 
     private void hwinit() {
         DcMotorEx m = hardwareMap.get(DcMotorEx.class, "test1");
-        Servo s = hardwareMap.get(Servo.class, "testServo");
-        sm = new SwerveModule(m, s);
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        s = hardwareMap.get(Servo.class, "testServo");
+        // srvo = hardwareMap.get(CRServo.class, "testCR");
+        // sm = new SwerveModule(m, s);
+        // imu = hardwareMap.get(BNO055IMU.class, "imu");
     }
 
     // Notes: Gamepad stick orientiation is North -, West -, South +, East +
@@ -63,10 +67,15 @@ public class TestSwerveModule extends LinearOpMode {
             double ry1 = gamepad1.right_stick_y;
             double y1 = gamepad1.left_stick_y;
             double x1 = gamepad1.left_stick_x;
+            // For a normal servo, the position is even across about 270 degrees (+/- 135)
+            // from position 0 to 1.0
+            s.setPosition((1.0 + rx + rx1) / 2.0);
+            double pos = s.getPosition(); // This is just 'get power' cuz CRServo!
             telemetry.addData("Left 1", String.format("%f, %f", rx1, ry1));
             telemetry.addData("Right 1", String.format("%f, %f", x1, y1));
             telemetry.addData("Left 2", String.format("%f, %f", rx, ry));
             telemetry.addData("Right 2", String.format("%f, %f", x, y));
+            telemetry.addData("Servo:", pos);
             /*
             if (Math.abs(rx) >= ROT_DEAD_ZONE) {
                 // This lets you rotate a little slower by default

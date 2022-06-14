@@ -14,7 +14,7 @@ public class SimpleSwerveDrive {
     private static int TRANSITION_DELAY_MS = 100;
 
     private boolean isRotating;
-    private SwerveModule fl, fr, rl, rr;
+    private SwerveController fl, fr, rl, rr;
 
     private static void Delay() {
         try {
@@ -52,10 +52,10 @@ public class SimpleSwerveDrive {
     }
 
     public SimpleSwerveDrive(DcMotorEx flm, DcMotorEx frm, DcMotorEx rlm, DcMotorEx rrm, Servo fls, Servo frs, Servo rls, Servo rrs) {
-        fl = new SwerveModule(flm, fls);
-        fr = new SwerveModule(frm, frs);
-        rl = new SwerveModule(rlm, rls);
-        rr = new SwerveModule(rrm, rrs);
+        fl = new SwerveController(flm, fls);
+        fr = new SwerveController(frm, frs);
+        rl = new SwerveController(rlm, rls);
+        rr = new SwerveController(rrm, rrs);
         isRotating = false;
     }
 
