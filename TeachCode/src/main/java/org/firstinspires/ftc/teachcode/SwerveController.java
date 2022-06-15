@@ -60,7 +60,7 @@ public class SwerveController {
     }
     // The angles for this function are a scale from -1 to +1 meaning -180 degrees to +180 degrees
     // But since we can only move 180 degrees, we may have to invert the wheel motor...
-    public void setControlRelative(double flp, double fla, double frp, double fra, double rlp, double rla, double rrp, double rra) {
+    private void setControlRelative(double flp, double fla, double frp, double fra, double rlp, double rla, double rrp, double rra) {
         // See if *any* of the servos require 'flipping'
         boolean ffl = (needFlip(fla) != flFlip);
         boolean ffr = (needFlip(fra) != frFlip);
@@ -87,7 +87,7 @@ public class SwerveController {
         srl.setPosition(rla);
         srr.setPosition(rra);
         // We need to wait until the wheels get to the right point, now
-        Delay();
+        if (somethingFlipping) Delay();
         // Now, make the motors go in the right direction :)
         mfl.setPower(flFlip ? -flp : flp);
         mfr.setPower(frFlip ? -frp : frp);
