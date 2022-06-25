@@ -3,16 +3,18 @@ package org.firstinspires.ftc.teachcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teachcode.ServoCode;
+import org.firstinspires.ftc.teachcode.BasicServoCode;
 
-public class ServoDemo extends OpMode {
-    private ServoCode servoCode;
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "BasicSensorDemo")
+
+public class BasicServoDemo extends OpMode {
+    private BasicServoCode servoCode;
     private Servo servo;
 
     @Override
     public void init() {
         // Called when INIT button pressed
-        this.servoCode = new ServoCode(this.servo);
+        this.servoCode = new BasicServoCode(this.servo);
     }
 
     @Override

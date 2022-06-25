@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teachcode;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class ServoCode {
+public class BasicServoCode {
     private final Servo servo;
 
-    public ServoCode(Servo servo) {
+    public BasicServoCode(Servo servo) {
         this.servo = servo;
     }
 
