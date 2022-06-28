@@ -14,7 +14,7 @@ public class BasicServoDemo extends OpMode {
     @Override
     public void init() {
         // Called when INIT button pressed
-        this.servo = hardwareMap.get(Servo.class, "servo"); // need to match in the Robot Configuration
+        this.servo = hardwareMap.get(Servo.class, "gobilda"); // need to match in the Robot Configuration
         this.servoCode = new BasicServoCode(this.servo);
     }
 
