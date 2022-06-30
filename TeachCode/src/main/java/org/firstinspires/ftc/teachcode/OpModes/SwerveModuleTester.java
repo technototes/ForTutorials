@@ -24,7 +24,7 @@ public class SwerveModuleTester extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        PIDFCoefficients
+        // PIDFCoefficients
         telemetry.log().setDisplayOrder(Telemetry.Log.DisplayOrder.NEWEST_FIRST);
         telemetry.log().setCapacity(6);
         telemetry.addData("State", "Getting hardware");
@@ -38,10 +38,10 @@ public class SwerveModuleTester extends LinearOpMode {
         ElapsedTime et = new ElapsedTime();
         et.reset();
         while (opModeIsActive()) {
-            telemetry.addData("FL", "%d", frontLeft.getAngle());
-            telemetry.addData("FR", "%d", frontRight.getAngle());
-            telemetry.addData("RL", "%d", rearLeft.getAngle());
-            telemetry.addData("RR", "%d", rearRight.getAngle());
+            telemetry.addData("FL", "%f", frontLeft.getAngle());
+            telemetry.addData("FR", "%f", frontRight.getAngle());
+            telemetry.addData("RL", "%f", rearLeft.getAngle());
+            telemetry.addData("RR", "%f", rearRight.getAngle());
             telemetry.addData("Loop", et.toString());
             et.reset();
             telemetry.update();
