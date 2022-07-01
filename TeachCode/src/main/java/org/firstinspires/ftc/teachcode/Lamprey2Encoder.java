@@ -2,14 +2,14 @@ package org.firstinspires.ftc.teachcode;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.AnalogInputController;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.annotations.AnalogSensorType;
 import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-// Not sure if the AnalogInput type is correct here...
-@AnalogSensorType
-@DeviceProperties(name = "@string/configTypeAnalogInput", xmlTag = "AnalogInput", builtIn = false)
-public class Lamprey2Encoder extends AnalogInput {
+// Started out as an actual device, but that was problematic for robot configuration :(
+public class Lamprey2Encoder /*extends AnalogInput */{
+    private AnalogInput lamprey;
     /* Stuff for the encoder: I should encapsulate this stuff */
     private ElapsedTime lastRead;
     private double lastGoodAngle;
@@ -30,7 +30,7 @@ public class Lamprey2Encoder extends AnalogInput {
     }
 
     public double getAngle() {
-        double thing = this.getVoltage() / maxVolts;
+        double thing = lamprey.getVoltage() / maxVolts;
         double angle = (360 * thing) % 360; // % 360 "just in case"
         // The encoder tries to smooth across 0->360 changes, which results in
         // bad readings that are wildly spread across the range, but only for
@@ -45,7 +45,8 @@ public class Lamprey2Encoder extends AnalogInput {
         return angle;
     }
     // Hopefully this will work from hwMap.get(...)
-    public Lamprey2Encoder(AnalogInputController controller, int channel) {
-        super(controller, channel);
+    public Lamprey2Encoder(HardwareMap hwMap, String name) {
+        lamprey = hwMap.get(AnalogInput.class, name);
+        lastRead = new ElapsedTime();
     }
 }
