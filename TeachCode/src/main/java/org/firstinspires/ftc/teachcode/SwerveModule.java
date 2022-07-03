@@ -55,7 +55,7 @@ public class SwerveModule {
         return Math.max(-1.0, Math.min(1.0, value));
     }
 
-    public static PIDFCoefficients servoPid = new PIDFCoefficients(6e-3, 0.003, 0, 0.1);
+    public static PIDFCoefficients servoPid = new PIDFCoefficients(4e-3, 6e-4, 1e-7, 0.15);
 
     public void resetPidData() {
         lastErr = 0;
