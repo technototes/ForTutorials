@@ -29,6 +29,13 @@ public class SensorDemo extends OpMode {
 
     enum State{started, foundColor, isClose, isFinished};
     State state;
+
+    @Override
+    public void start() {
+        state = State.started;
+        sensorCode.moveForward(1,5 );
+    }
+
     @Override
     public void loop() {
         switch(state) {
@@ -56,9 +63,5 @@ public class SensorDemo extends OpMode {
 
     }
 
-    @Override
-    public void start() {
-        state = State.started;
-        sensorCode.moveForward(1,5 );
-    }
+
 }
