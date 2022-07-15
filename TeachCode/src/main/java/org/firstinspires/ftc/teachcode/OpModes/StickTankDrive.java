@@ -29,7 +29,6 @@ public class StickTankDrive extends OpMode {
             tankDrive.motorRPower(gamerPad.right_stick_y);
         }
     }
-
     @Override
     public void start() {
 
