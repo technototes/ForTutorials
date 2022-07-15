@@ -37,6 +37,8 @@ public class BasicServoDemo extends OpMode {
             this.servoCode.toLeft();
         } else if (this.gamepad.dpad_right) {
             this.servoCode.toRight();
+        } else if (this.gamepad.dpad_up) {
+            this.servoCode.toMiddle();
         }
     }
 }

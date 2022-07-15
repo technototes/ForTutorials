@@ -28,6 +28,7 @@ public class BasicServoCode {
     }
 
     public double get(){
+        /// Not really useful since technically we didn't extending the Subsystem class
         return this.servo.getPosition();
     }
 }
