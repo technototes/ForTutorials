@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.robocol.Command;
 
 import org.firstinspires.ftc.teachcode.BasicServoCode;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "BasicSensorDemo")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "BasicServoDemo")
 public class BasicServoDemo extends OpMode {
     private BasicServoCode servoCode;
     private Servo servo;
