@@ -67,8 +67,8 @@ public class StickTankDrive extends OpMode {
         telemetry.addData("Color Light", color.getLightDetected());
         telemetry.addData("Color ARGB", "%x", color.argb());
         telemetry.addData("Color Red", "%x", color.red());
-        telemetry.addData("Color Blue", "%x", color.green());
-        telemetry.addData("Color Green", "%x", color.blue());
+        telemetry.addData("Color Blue", "%x", color.blue());
+        telemetry.addData("Color Green", "%x", color.green());
         telemetry.addData("Bump B", touchb.getValue());
         telemetry.addData("Servo Power", srvpos);
         telemetry.update();
