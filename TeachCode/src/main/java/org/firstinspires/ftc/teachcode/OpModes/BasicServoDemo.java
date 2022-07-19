@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teachcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.robocol.Command;
 
 import org.firstinspires.ftc.teachcode.BasicServoCode;
 
