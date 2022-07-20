@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teachcode.BasicServoCode;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "ServoDirection02Then09")
-public class ServoDirection02Then09 extends OpMode {
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "ServoDirection02")
+public class ServoDirection02 extends OpMode {
     private BasicServoCode servoCode;
     private Servo servo;
 
@@ -21,7 +21,6 @@ public class ServoDirection02Then09 extends OpMode {
     public void start(){
         // Called when PLAY button being pressed
         this.servoCode.setPosition(0.2);
-        this.servoCode.setPosition(0.9);
     }
 
     @Override
