@@ -9,7 +9,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teachcode.TankDriveDemo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teachcode.TankDrive;
 
@@ -17,7 +19,7 @@ import org.firstinspires.ftc.teachcode.TankDrive;
 
 public class StickTankDrive extends OpMode {
     private static final double DEAD_ZONE = 0.1;
-    private TankDrive tankDrive;
+    private TankDriveDemo tankDrive;
     private DcMotorEx motorL;
     private DcMotorEx motorR;
     private Servo servo;
@@ -29,7 +31,8 @@ public class StickTankDrive extends OpMode {
     public void init() {
         motorL = hardwareMap.get(DcMotorEx.class, "motorL");
         motorR = hardwareMap.get(DcMotorEx.class, "motorR");
-        tankDrive = new TankDrive(motorL, motorR);
+        motorR.setDirection(DcMotorSimple.Direction.REVERSE);
+        tankDrive = new TankDriveDemo(motorL, motorR);
         servo = hardwareMap.get(Servo.class, "gobilda");
         toucha = hardwareMap.get(RevTouchSensor.class, "touch6");
         touchb = hardwareMap.get(RevTouchSensor.class, "touch7");
@@ -48,7 +51,8 @@ public class StickTankDrive extends OpMode {
         }
         tankDrive.motorLPower(left);
         if (Math.abs(gamepad1.right_stick_y) > DEAD_ZONE) {
-            right = -gamepad1.right_stick_y;
+            tankDrive.motorRPower(gamepad1.right_stick_y);
+            right = gamepad1.right_stick_y;
         } else {
             right = 0;
         }

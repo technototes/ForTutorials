@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-@TeleOp(name = "StickTankDrive")
+@TeleOp(name = "DemoOpMode")
 public class DemoOpMode extends OpMode {
 
     @Override
