@@ -15,9 +15,6 @@ public class CRServoCode {
     }
 
     public void setPower(double power) {
-        /*
-         * param power: Range from 0.0 to 1.0
-         */
         this.servo.setPower(power);
     }
 
@@ -30,6 +27,18 @@ public class CRServoCode {
     }
 
     public void invertDirection() {
-        this.servo.setDirection(this.servo.getDirection() == DcMotorSimple.Direction.FORWARD ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
+        this.setDirection(this.servo.getDirection() == DcMotorSimple.Direction.FORWARD ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
+    }
+
+    public void stop() {
+        this.setPower(0);
+    }
+
+    public void setMaxPositiveSpeed() {
+        this.setPower(1);
+    }
+
+    public void setMaxNegativeSpeed() {
+        this.setPower(-1);
     }
 }
