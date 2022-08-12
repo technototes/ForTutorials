@@ -4,6 +4,13 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class CRServoCode {
+    public class CRServoConstant{
+        // no need to have import statement of this class
+        public static final double MAX_POSITIVE_SPEED = 1.0;
+        public static final double MAX_NEGATIVE_SPEED = -1.0;
+        public static final double STOP_SPEED = 0.0;
+    }
+
     private final CRServo servo;
 
     public CRServoCode(CRServo servo) {
@@ -31,14 +38,14 @@ public class CRServoCode {
     }
 
     public void stop() {
-        this.setPower(0);
+        this.setPower(CRServoConstant.STOP_SPEED);
     }
 
     public void setMaxPositiveSpeed() {
-        this.setPower(1);
+        this.setPower(CRServoConstant.MAX_POSITIVE_SPEED);
     }
 
     public void setMaxNegativeSpeed() {
-        this.setPower(-1);
+        this.setPower(CRServoConstant.MAX_NEGATIVE_SPEED);
     }
 }
