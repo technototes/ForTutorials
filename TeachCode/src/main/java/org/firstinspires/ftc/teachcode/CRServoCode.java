@@ -30,10 +30,12 @@ public class CRServoCode {
     }
 
     public void setDirection(DcMotorSimple.Direction direction) {
+        // only work in the init() method, not the loop() method
         this.servo.setDirection(direction);
     }
 
     public void invertDirection() {
+        // not useful since you can't change direction the loop() method
         this.setDirection(this.servo.getDirection() == DcMotorSimple.Direction.FORWARD ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
     }
 

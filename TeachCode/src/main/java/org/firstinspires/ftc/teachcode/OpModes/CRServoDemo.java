@@ -33,8 +33,6 @@ public class CRServoDemo extends OpMode {
             this.servoCode.setMaxNegativeSpeed();
         } else if (this.gamepad.dpad_right) {
             this.servoCode.setMaxPositiveSpeed();
-        } else if (this.gamepad.dpad_up) {
-            this.servoCode.invertDirection();
         } else if (this.gamepad.dpad_down) {
             this.servoCode.stop();
         }
